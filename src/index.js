@@ -12,6 +12,7 @@ function iniciaVerificacao() {
 	// Remove the 'e' characters from the string
 	var valor = valor.replace(/ e/g,"");
 
+	// Call to the main function
 	defineValor(valor);
 }
 
@@ -114,37 +115,62 @@ function centena(palavra) {
 
 function defineValor(valor) {
 
+	// Split every word to the array palavras
 	var palavras = valor.split(" ");
+
 	var numerico = 0.0;
 	var total = 0.0;
 	var i = 0;
 	var y = 0;
 
+	// Start a loop to check every word
 	for (i; i < palavras.length; i++) {
 
-		var palavra = palavras[i];
+		switch(palavras[i]) {
 
-		switch(palavra) {
 			case 'milhao':
+
 			numerico = 0;
+
+			// Start a loop to take the words before milhao
 			for (y; y < i; y++) {
 
-				numerico += centena(palavras[y]);
+				var verifica = centena(palavras[y]);
+
+				// Add the numbers to var numerico only if a number
+				if (!(isNaN(verifica))) {
+					numerico += verifica;
+				}
 
 			}
 
+			// Multiply by million
 			total += numerico * 1000000;
+
+			// Save the last match index number
 			y = i + 1;
 
 			break;
 
 			case 'milhoes':
+
 			numerico = 0;
+
+			// Start a loop to take the words before milhoes
 			for (y; y < i; y++) {
-				numerico += centena(palavras[y]);
+
+				var verifica = centena(palavras[y]);
+
+				// Add the numbers to var numerico only if a number
+				if (!(isNaN(verifica))) {
+					numerico += verifica;
+				}
 			}
 
+			// Multiply by million
 			total += numerico * 1000000;
+
+			// Save the last match index number
 			y = i + 1;
 
 			break;
@@ -152,55 +178,90 @@ function defineValor(valor) {
 			case 'mil':
 
 			if ( i == 0 ) {
+
+				// If mil its the first word, the total equal to thousand
 				total = 1000;
 				break;
 
 			} else {
+				// If mil isn't first word
 				numerico = 0;
+
+				// Start a loop to take the words before mil
 				for (y; y < i; y++) {
 
-					numerico += centena(palavras[y]);
+					var verifica = centena(palavras[y]);
+
+					// Add the numbers to var numerico only if a number
+					if (!(isNaN(verifica))) {
+						numerico += verifica;
+					} else {
+						numerico = 1;
+					}
 
 				}
 
+				// Multiply by thousand
 				total += numerico * 1000;
+
+				// Save the last match index number
 				y = i + 1;
+
 				break;
 
 			}
 
 			case 'reais':
+
 			numerico = 0;
+
+			// Start a loop to take the words before reais
 			for (y; y < i; y++) {
 
 				var verifica = centena(palavras[y]);
+
+				// Add the numbers to var numerico only if a number
 				if (!(isNaN(verifica))) {
 					numerico += verifica;
 				}
 			}
 
+			// Sum the numbers
 			total += numerico;
+
+			// Save the last match index number
 			y = i + 1;
+
 			break;
 
 			case 'centavos':
 
 			numerico = 0;
+
+			// Start a loop to take the words before centavos
 			for (y; y < i; y++) {
 
 				var verifica = centena(palavras[y]);
+
+				// Add the numbers to var numerico only if a number
 				if (!(isNaN(verifica))) {
+					// Add the numbers to var numerico module 100 and multiply to get the cents
 					numerico += ((verifica % 100) * 0.01);
 				}
 			}
+
+			// Sum the numbers
 			total += numerico;
+
 			break;
 
 			default:
+			//does nothing
 			break;
 		}
 
 	}
 
+	// alert the result
 	alert('R$ ' + total.toFixed(2));
 }
