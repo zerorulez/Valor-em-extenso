@@ -190,7 +190,7 @@ function defineValor(valor) {
 
 				var verifica = centena(palavras[y]);
 				if (!(isNaN(verifica))) {
-					numerico += verifica * 0.01;
+					numerico += ((verifica % 100) * 0.01);
 				}
 			}
 			total += numerico;
